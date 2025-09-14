@@ -1,23 +1,23 @@
 import express from "express";
 
-const setupServer = express();
+const app = express();
 const PORT = 3000;
 
-setupServer.use(express.json());
+app.use(express.json());
 
-setupServer.use((req, res, next) => {
+app.listen(PORT, (error) => {
+  if (error) {
+    throw error;
+  }
+  console.log(`Server is running on port ${PORT}`);
+});
+
+app.use((req, res, next) => {
   console.log(`Time: ${new Date().toLocaleString()}`);
   next();
 });
 
-setupServer.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.get("/movies", (request, response) => {
+  response.json({message: "Hello Express!"})
+})
 
-
-
-// setupServer.use('*', (req, res, next) => {
-//   res.status(404).json({
-//     message: 'Route not found',
-//   });
-// });
