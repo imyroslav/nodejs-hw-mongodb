@@ -1,25 +1,31 @@
 import express from "express";
-
-const app = express();
-const PORT = 3000;
-
-// app.use(express.json());
-
-app.use(function (req, res, next) {
-  console.log(`Time: ${new Date().toLocaleString()}`);
-  next();
-});
-
-app.listen(PORT, (error) => {
-  if (error) {
-    throw error;
-  }
-  console.log(`Server is running on port ${PORT}`);
-});
+import cors from "cors";
+import pino from "pino";
+import pinoHttp from "pino-http";
 
 
+export function setupServer() {
+  
+  const app = express();
 
-app.get("/movies", (request, response) => {
-  response.json({message: `Time: ${new Date().toLocaleString()}`})
-})
+// Налаштування CORS  
+  app.use(cors());
+
+// Налаштування логгера pino  
+  const logger = pino();
+  app.use(pinoHttp({ logger }));
+
+
+// Ваші маршрути тут (приклад)  
+  app.get('/', (req, res) => {
+    res.send('Сервер працює!');
+  });
+
+// Обробка неіснуючих роутів 
+  app.use((req, res) => {
+    res.status(404).json({ error: 'Маршрут не знайдено' });
+  });
+  
+  return app;
+}
 
