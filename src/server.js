@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+// import cors from "cors";
 import pino from "pino";
 import pinoHttp from "pino-http";
 import { getEnvVar } from './utils/getEnvVar.js';
@@ -14,7 +14,7 @@ export default function setupServer() {
   app.use(express.json());
 
 // Налаштування CORS  
-  app.use(cors());
+  // app.use(cors());
 
 // Налаштування логгера pino  
   const logger = pino();
