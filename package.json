@@ -1,6 +1,7 @@
 {
   "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/imyroslav/nodejs-hw-mongodb/issues"
   },
@@ -29,6 +29,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "mongoose": "^8.18.2",
     "pino-http": "^10.5.0"
   }
 }

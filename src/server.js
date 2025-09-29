@@ -7,7 +7,7 @@ import { getEnvVar } from './utils/getEnvVar.js';
 const PORT = Number(getEnvVar('PORT', '3000'));
 
 
-export default function setupServer() {
+export function setupServer() {
   
   const app = express();
 
