@@ -32,11 +32,11 @@ export function setupServer() {
     
     const contacts = await getAllContacts();
 
-    res.status(200).json({
+    res.status(200).json.stringify({
       status: 200,
       message: "Successfully found contacts!",
-      data: JSON.stringify(contacts, null, 2),
-    });
+      data: contacts,
+    }, null, 2);
   });
 
   // Contact by id route
