@@ -44,8 +44,6 @@ export function setupServer() {
     next();
   });
 
-
-
   app.listen(PORT, (error) => {
     if (error) {
       throw error;
