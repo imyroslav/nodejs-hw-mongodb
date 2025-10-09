@@ -12,7 +12,7 @@ export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({
     email: payload.email
   });
-  if (user) throw createHttpError[409]("Such email is already in use")
+  if (user) throw new createHttpError[409]("Such email is already in use")
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10)
 
@@ -27,12 +27,12 @@ export const loginUser = async (payload) => {
 
   const user = await UsersCollection.findOne({ email:     payload.email });
   if (!user) {
-    throw createHttpError[401]("User not found");
+    throw new createHttpError[401]("User not found");
   }
   const isEqual = await bcrypt.compare(payload.password, user.password);
 
   if (!isEqual) {
-    throw createHttpError[401]("Wrong password");
+    throw new createHttpError[401]("Wrong password");
   }
 
   await SessionsCollection.deleteOne({ userId: user._id });
@@ -74,14 +74,14 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   });
 
   if (!session) {
-    throw createHttpError[401]("Session not found");
+    throw new createHttpError[401]("Session not found");
   }
 
   const isSessionTokenExpired =
     new Date() > new Date(session.refreshTokenValidUntil);
 
   if (isSessionTokenExpired) {
-    throw createHttpError[401]("Session token expired");
+    throw new createHttpError[401]("Session token expired");
   }
   
   const newSession = createSession();
