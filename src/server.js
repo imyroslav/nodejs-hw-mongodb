@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import pino from "pino";
 import pinoHttp from "pino-http";
+import cookieParser from "cookie-parser";
 import { getEnvVar } from "./utils/getEnvVar.js";
 import router from "./routers/index.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -22,6 +23,8 @@ export function setupServer() {
 
  
   app.use(cors());
+
+  app.use(cookieParser());
 
   const logger = pino();
   app.use(pinoHttp({ logger }));

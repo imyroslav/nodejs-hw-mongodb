@@ -1,6 +1,10 @@
 import bcrypt from "bcrypt";
+import { randomBytes } from "crypto";
 import createHttpError from "http-errors";
 import { UsersCollection } from "../db/models/user.js";
+import { FIFTEEN_MINUTES, ONE_DAY } from "../constants/index.js";
+import { SessionsCollection } from "../db/models/session.js";
+
 
 // ************ User register *******************
 export const registerUser = async (payload) => {
@@ -8,7 +12,7 @@ export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({
     email: payload.email
   });
-  if (user) throw createHttpError[409]("Such email is already in use")
+  if (user) throw new createHttpError[409]("Such email is already in use")
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10)
 
@@ -20,13 +24,72 @@ export const registerUser = async (payload) => {
 
 // ************* User login *****************
 export const loginUser = async (payload) => {
-  const user = await UsersCollection.findOne({ email: payload.email });
+
+  const user = await UsersCollection.findOne({ email:     payload.email });
   if (!user) {
-    throw createHttpError[401]("User not found");
+    throw new createHttpError[401]("User not found");
   }
-  const isEqual = await bcrypt.compare(payload.password, user.password); 
+  const isEqual = await bcrypt.compare(payload.password, user.password);
 
   if (!isEqual) {
-    throw createHttpError[401]("Wrong password");
+    throw new createHttpError[401]("Wrong password");
   }
-}
+
+  await SessionsCollection.deleteOne({ userId: user._id });
+
+  const accessToken = randomBytes(30).toString("base64");
+  const refreshToken = randomBytes(30).toString("base64");
+
+  return await SessionsCollection.create({
+    userId: user._id,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  });
+};
+
+// ************** User logout *************
+export const logoutUser = async (sessionId) => {
+  await SessionsCollection.deleteOne({ _id: sessionId });
+};
+
+// ************ Session refresh *************
+const createSession = () => {
+  const accessToken = randomBytes(30).toString("base64");
+  const refreshToken = randomBytes(30).toString("base64");
+
+  return {
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  };
+};
+
+export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
+  const session = await SessionsCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+
+  if (!session) {
+    throw new createHttpError[401]("Session not found");
+  }
+
+  const isSessionTokenExpired =
+    new Date() > new Date(session.refreshTokenValidUntil);
+
+  if (isSessionTokenExpired) {
+    throw new createHttpError[401]("Session token expired");
+  }
+  
+  const newSession = createSession();
+
+  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+
+  return await SessionsCollection.create({
+    userId: session.userId,
+    ...newSession,
+  });
+};
