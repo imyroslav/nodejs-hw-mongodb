@@ -73,6 +73,9 @@ export const patchContactController = async (req, res) => {
         throw new createHttpError.NotFound("Contact not found :( ");
     }
 
+    if (result.contact.userId.toString() != req.user.id.toString() ) {
+        throw new createHttpError[403]("You don't have rights to modify this contact!")
+    }
 
   res.json({
     status: 200,
