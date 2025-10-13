@@ -40,13 +40,9 @@ export const getContactByIdController = async (req, res) => {
     const contact = await getContactById(contactId, userId);  
     
     if (contact === null) {
-        throw new createHttpError.NotFound("Contact not found :( ");
+        throw new createHttpError.NotFound("Contact not found :(");
     }
 
-    if (contact.userId.toString() != req.user.id.toString()) {
-        throw new createHttpError[403]("You don't have rights to access this contact!")
-    }
-    
     res.status(200).json({
         status: 200,
 	    message: `Successfully found contact with id ${contactId}!`,
@@ -76,10 +72,6 @@ export const patchContactController = async (req, res) => {
         throw new createHttpError.NotFound("Contact not found :( ");
     }
 
-    if (result.contact.userId.toString() != req.user.id.toString() ) {
-        throw new createHttpError[403]("You don't have rights to modify this contact!")
-    }
-
   res.json({
     status: 200,
     message: "Successfully patched a contact!",
@@ -96,10 +88,6 @@ export const deleteContactController = async (req, res) => {
 
     if (contact === null) {
         throw new createHttpError.NotFound("Contact not found :( ");
-    }
-
-    if (contact.userId.toString() != req.user.id.toString()) {
-        throw new createHttpError[403]("You don't have rights to delete this contact!")
     }
 
     res.status(204).send();
