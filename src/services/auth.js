@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
 import { randomBytes } from "crypto";
 import createHttpError from "http-errors";
+import jwt from "jsonwebtoken"
 import { UsersCollection } from "../db/models/user.js";
 import { FIFTEEN_MINUTES, ONE_DAY } from "../constants/index.js";
 import { SessionsCollection } from "../db/models/session.js";
+import { getEnvVar } from "../utils/getEnvVar.js" 
 
 
 // ************ User register *******************
@@ -53,6 +55,19 @@ export const loginUser = async (payload) => {
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
 };
+
+// ************** Send password reset email ********
+export const sendResetEmail = async (email) => {
+  const user = await UsersCollection.findOne({ email: email })
+  
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const token = jwt.sign({ sub: user._id }, getEnvVar("JWT_SECRET") );
+
+  console.log(`JWT Token: ${token }`);
+}
 
 // ************ Session refresh *************
 const createSession = () => {

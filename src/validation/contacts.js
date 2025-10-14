@@ -58,3 +58,4 @@ export const patchContactSchema = Joi.object({
         "any.only": "Contact type should match to the list of valid values",
     }),
 });
+
