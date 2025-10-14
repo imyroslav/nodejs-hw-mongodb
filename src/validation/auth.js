@@ -14,3 +14,13 @@ export const loginUserSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
+
+
+// ************** Send password reset email *********
+export const sendResetEmailSchema = Joi.object({
+    email: Joi.string().min(3).max(20).messages({
+        "string.base": "E-mail should be a string",  
+        "string.min": "E-mail should have at least {#limit} characters",
+        "string.max": "E-mail should have maximum {#limit} characters",
+    }),
+})

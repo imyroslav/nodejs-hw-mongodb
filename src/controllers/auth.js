@@ -2,6 +2,7 @@ import { registerUser } from "../services/auth.js";
 import { loginUser } from "../services/auth.js";
 import { ONE_DAY } from "../constants/index.js";
 import { logoutUser } from "../services/auth.js";
+import { sendResetEmail } from "../services/auth.js";
 import { refreshUsersSession } from "../services/auth.js";
 
 // *********** User register ******************
@@ -49,6 +50,17 @@ export const logoutUserController = async (req, res) => {
 
   res.status(204).send("User logged out successfully");
 };
+
+// **************** Send password reset email *********
+export const sendResetEmailController = async (req, res) => {
+  const email = req.body.email
+  await sendResetEmail(email);
+
+  res.json({
+    status: 200,
+    message: "Reset password email sent",
+  })
+}
 
 // ***************** Session refresh ****************
 const setupSession = (res, session) => {
