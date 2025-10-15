@@ -9,6 +9,7 @@ import {
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
 import { parseFilterParams } from "../utils/parseFilterParams.js";
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js"
 
 // Get all contacts controller
 export const getContactsController = async (req, res) => {
@@ -65,8 +66,20 @@ export const createContactController = async (req, res) => {
 // Patch contact by id
 export const patchContactController = async (req, res) => {
     const { contactId } = req.params;
-    const userId = req.user.id
-    const result = await patchContact(contactId, userId, req.body);
+    const userId = req.user.id;
+    const photo = req.file;
+
+    let photoUrl;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+    const result = await patchContact(contactId, userId,
+        {
+            ...req.body,
+            photo: photoUrl,
+        });
 
     if (result === null) {
         throw new createHttpError.NotFound("Contact not found :( ");
