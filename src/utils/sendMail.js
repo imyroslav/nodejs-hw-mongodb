@@ -12,6 +12,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// export const sendEmail = async () => {
+//   return await transporter.sendMail({
+//     to: "imyroslav@ukr.net",
+//     text: "password reset link",
+//     from: getEnvVar(SMTP.SMTP_FROM)
+//   });
+// };
+
 export const sendEmail = async (options) => {
   return await transporter.sendMail(options);
 };

@@ -39,7 +39,7 @@ ctrlWrapper(sendResetEmailController))
 
 // ************* Password reset ******************
 router.post(
-  '/reset-password',
+  "/reset-password",
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
