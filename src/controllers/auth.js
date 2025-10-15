@@ -4,6 +4,7 @@ import { ONE_DAY } from "../constants/index.js";
 import { logoutUser } from "../services/auth.js";
 import { sendResetEmail } from "../services/auth.js";
 import { refreshUsersSession } from "../services/auth.js";
+import { resetPassword } from '../services/auth.js';
 
 // *********** User register ******************
 export const registerUserController = async (req, res) => {
@@ -59,8 +60,19 @@ export const sendResetEmailController = async (req, res) => {
   res.json({
     status: 200,
     message: "Reset password email sent",
+    data: {},
   })
 }
+
+// ****************** Password reset ****************
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+  res.json({
+    message: 'Password was successfully reset!',
+    status: 200,
+    data: {},
+  });
+};
 
 // ***************** Session refresh ****************
 const setupSession = (res, session) => {
