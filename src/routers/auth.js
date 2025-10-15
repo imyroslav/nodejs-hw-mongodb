@@ -9,6 +9,9 @@ import { logoutUserController } from "../controllers/auth.js";
 import { sendResetEmailSchema } from "../validation/auth.js"
 import { sendResetEmailController } from "../controllers/auth.js"
 import { refreshUserSessionController } from "../controllers/auth.js";
+import { resetPasswordSchema } from '../validation/auth.js';
+import { resetPasswordController } from '../controllers/auth.js';
+
 
 const router = Router();
 
@@ -33,6 +36,15 @@ router.post("/logout", ctrlWrapper(logoutUserController));
 // **************** Rest password email ***********
 router.post("/send-reset-email", validateBody(sendResetEmailSchema),
 ctrlWrapper(sendResetEmailController))
+
+// ************* Password reset ******************
+router.post(
+  '/reset-password',
+  validateBody(resetPasswordSchema),
+  ctrlWrapper(resetPasswordController),
+);
+
+
 
 // ************** Session refresh **************
 router.post("/refresh", ctrlWrapper(refreshUserSessionController));
