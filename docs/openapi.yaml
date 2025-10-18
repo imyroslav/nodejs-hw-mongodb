@@ -1,18 +1,25 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: <назва вашого додатку>
+  title: <Contacts management application>
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: <опис вашого додатку>
+  description: <With help of this application you may create, modify and delete contact records>
 tags:
   # теги, що ви будете використовувати
+  - name: Contacts
+    description: Operations about users.
+  - name: Auth
+    description: Auth operations.
 servers:
   - url: http://localhost:3000
-  - url: #посилання на задеплоєний сайт
+  - url: https://contacts-application-0knp.onrender.com
 paths:
   # тут будуть посилання на ендпоінти
+  /contact/{id}:
+    get:
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
 components:
   securitySchemes:
     bearerAuth:
