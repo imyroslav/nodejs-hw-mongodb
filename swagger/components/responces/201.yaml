@@ -1,0 +1,19 @@
+description: Contact successfully created
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: Contact successfully created!
+        data:
+          type: object
+          description: Created contact

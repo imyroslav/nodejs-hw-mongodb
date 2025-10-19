@@ -16,15 +16,18 @@ servers:
   - url: http://localhost:3000
   - url: https://contacts-application-0knp.onrender.com
 paths:
-  # ********** Get all contacts ***************
-  /students:
+  /contacts:
     get:
       $ref: ../swagger/paths/contacts/get.yaml
-
-  # ********** Get contacts by id *************
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
   /contact/{id}:
     get:
       $ref: ../swagger/paths/contacts/{id}/get.yaml
+    patch:
+      $ref: ../swagger/paths/contacts/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/contacts/{id}/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
