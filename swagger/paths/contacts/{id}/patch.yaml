@@ -48,8 +48,26 @@ requestBody:
             format: binary
 responses:
   '200':
-    $ref: '../../../components/responses/200.yaml'
+    description: 'Patch contact by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched contact with id 68ec5887f517ebf4133eba5c!
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
   '404':
-    $ref: '../../../components/responses/404.yaml'
+    $ref: ../../../components/responces/401.yaml
   '401':
-    $ref: '../../../components/responses/401.yaml'
+    $ref: ../../../components/responces/404.yaml
