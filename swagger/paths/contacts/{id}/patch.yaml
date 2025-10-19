@@ -1,18 +1,25 @@
 tags:
   - Contacts
-summary: Create contact
-operationId: createContact
-description: 'Create a contact with payload'
+summary: Update contact by id
+operationId: updateContact
+description: Update contact by id
 security:
   - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      description: "Contact's id"
+      type: string
+      example: 68ec5887f517ebf4133eba5c4
+    description: Contact id
 requestBody:
+  required: true
   content:
     multipart/form-data:
       schema:
         type: object
-        required:
-          - name
-          - phoneNumber
         properties:
           name:
             description: "Contact's name"
@@ -40,7 +47,9 @@ requestBody:
             type: string
             format: binary
 responses:
-  '201':
-    $ref: ../../components/responses/201.yaml
+  '200':
+    $ref: '../../../components/responses/200.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
   '401':
-    $ref: '../../components/responses/401.yaml'
+    $ref: '../../../components/responses/401.yaml'
