@@ -16,7 +16,12 @@ servers:
   - url: http://localhost:3000
   - url: https://contacts-application-0knp.onrender.com
 paths:
-  # тут будуть посилання на ендпоінти
+  # ********** Get all contacts ***************
+  /students:
+    get:
+      $ref: ../swagger/paths/contacts/get.yaml
+
+  # ********** Get contacts by id *************
   /contact/{id}:
     get:
       $ref: ../swagger/paths/contacts/{id}/get.yaml
