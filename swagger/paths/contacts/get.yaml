@@ -22,7 +22,7 @@ parameters:
       example: 10
     description: Number of contacts per page (default = 10, max = 10)
   - in: query
-    name: sortBy
+    name: parseSortOrder
     schema:
       type: string
       enum: [name, phoneNumber, contactType, createdAt]
@@ -36,13 +36,13 @@ parameters:
       example: asc
     description: Sorting order (asc = ascending, desc = descending)
   - in: query
-    name: filterByContactType
+    name: parseContactType
     schema:
       type: string
       enum: ['work', 'home', 'personal']
     description: Filter contacts by type
   - in: query
-    name: filterBYIsFavourite
+    name: parseIsFavourite
     schema:
       type: boolean
       example: true
