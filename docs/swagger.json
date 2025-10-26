@@ -65,7 +65,7 @@
           },
           {
             "in": "query",
-            "name": "sortBy",
+            "name": "parseSortOrder",
             "schema": {
               "type": "string",
               "enum": [
@@ -93,7 +93,7 @@
           },
           {
             "in": "query",
-            "name": "filterByContactType",
+            "name": "parseContactType",
             "schema": {
               "type": "string",
               "enum": [
@@ -106,7 +106,7 @@
           },
           {
             "in": "query",
-            "name": "filterBYIsFavourite",
+            "name": "parseIsFavourite",
             "schema": {
               "type": "boolean",
               "example": true
